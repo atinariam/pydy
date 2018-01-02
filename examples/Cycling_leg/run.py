@@ -73,7 +73,9 @@ Pedaal = RigidBody('Pedaal', T, C, 0.1*m, IBody_tuple)
 #Force list and body list
 FL = [(P, m * g * N.y), 
       (R, m * g * N.y), 
-      (A,(-75*q1-0.01*u1)*A.z)]
+      (A,(-75*q1-0.01*u1)*A.z),
+      (B,(-25*q2*B.z)),
+      (C,(-25*C.z))]
 BL = [BodyP, BodyR, Pedaal]
 
 # Define configuration constraints and obtain velocity constraints
@@ -123,3 +125,16 @@ t = np.linspace(0,5,10000)
 result = odeint(RHS, q0, t, args=(constants,))
 q = np.rad2deg(result)
 
+plt.figure(1)
+plt.grid(True)
+plt.plot(t,q[:,0],'-', linewidth = 2, label = 'q1')
+plt.plot(t,q[:,2], '--', linewidth = 2, label = 'q2')
+plt.legend()
+plt.title('Angles upper leg q1 and lower leg q2')
+plt.xlabel('Time (sec)')
+plt.ylabel('Angle (deg)')
+plt.figure(2)
+plt.title('Position of the pedal')
+plt.xlabel('Time (sec)')
+plt.plot(0.18*np.sin(q[:,1]), 0.18*np.cos(q[:,1]))
+plt.show()
